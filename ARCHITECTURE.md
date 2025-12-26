@@ -8,7 +8,8 @@
 5. [Data Flow](#data-flow)
 6. [Native Libraries](#native-libraries)
 7. [Communication Protocols](#communication-protocols)
-8. [Security](#security)
+8. [Remote Connectivity & Phone App Integration](#remote-connectivity--phone-app-integration)
+9. [Security](#security)
 
 ## System Overview
 
@@ -421,6 +422,65 @@ SPAKE2 (Simple Password Authenticated Key Exchange):
 - Secure pairing between phone and vehicle
 - Encrypted communication
 - Protection against man-in-the-middle attacks
+
+## Remote Connectivity & Phone App Integration
+
+### Overview
+
+The app features sophisticated remote connectivity allowing users to monitor and control their BYD vehicle from a smartphone app. This enables real-time status updates, remote commands, and live camera streaming.
+
+**For complete details, see [REMOTE_CONNECTION.md](REMOTE_CONNECTION.md)**
+
+### Key Remote Features
+
+**Socket.IO Real-Time Communication:**
+- Bidirectional messaging between vehicle and phone app
+- 30+ message types for status updates and commands
+- WebSocket connection over cellular/WiFi
+- Automatic reconnection with exponential backoff
+
+**WebRTC Video Streaming:**
+- Live camera feeds from vehicle to phone
+- H.264/VP8 video encoding
+- DTLS-SRTP encryption for security
+- Multi-camera support (front/rear/side/interior)
+
+**Remote Capabilities:**
+- Monitor battery, location, doors, charging status
+- Lock/unlock doors remotely
+- Pre-condition climate control
+- View live camera feeds
+- Receive push notifications for vehicle events
+
+### Remote Architecture
+
+```
+Phone App ←→ Cloud Backend (Socket.IO + WebRTC) ←→ Vehicle Infotainment
+          (Internet/Cellular)                    (WiFi/Cellular)
+```
+
+**Key Components:**
+- `JoinSocketIO.java` - Socket.IO room management
+- `br.com.rory.electro.k.a.d` - Socket.IO client
+- `br.com.rory.electro.i.m` - Socket manager
+- `br.com.rory.electro.l.a/*` - 30+ message type handlers
+- `libjingle_peerconnection_so.so` - WebRTC implementation
+- `libspake2.so` - Secure pairing protocol
+
+### Message Types
+
+Examples of bidirectional messages:
+- Vehicle → Phone: Battery status, location, door status, speed, temperature
+- Phone → Vehicle: Lock doors, climate control, honk horn, flash lights
+- Push notifications: Charging complete, door opened, low battery alerts
+
+### Security
+
+- OAuth 2.0 authentication (likely Google Sign-In)
+- TLS/SSL for all connections
+- SPAKE2 secure pairing protocol
+- End-to-end encryption for commands
+- Device whitelisting
 
 ## Communication Protocols
 

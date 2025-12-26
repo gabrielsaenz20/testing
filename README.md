@@ -2,7 +2,7 @@
 
 ## Overview
 
-This is an Android application designed to be installed on BYD electric vehicle infotainment systems. The app provides real-time vehicle information, camera feeds, and various monitoring capabilities directly on the vehicle's Android-based infotainment display.
+This is an Android application designed to be installed on BYD electric vehicle infotainment systems. The app provides real-time vehicle information, camera feeds, and various monitoring capabilities directly on the vehicle's Android-based infotainment display. Additionally, it enables **remote monitoring and control** through a smartphone app via cloud connectivity.
 
 ## Features
 
@@ -26,6 +26,17 @@ The application displays and monitors the following vehicle information:
   - CLAHE (Contrast Limited Adaptive Histogram Equalization) for image enhancement
   - Motion detection using MOG2 (Mixture of Gaussians) algorithm
   - Shadow filtering and foreground detection
+
+### Remote Connectivity (Phone App Integration) 🆕
+- **Real-Time Monitoring**: View vehicle status from anywhere via smartphone
+- **Remote Control**: Lock/unlock doors, control climate, honk horn
+- **Live Camera Streaming**: View vehicle cameras remotely via WebRTC
+- **Push Notifications**: Alerts for charging, security, maintenance
+- **Google Account Integration**: Secure authentication and user management
+- **Cloud Synchronization**: Continuous data sync between vehicle and phone
+- **Two-Way Communication**: Socket.IO-based real-time messaging
+
+**For detailed information about remote features, see [REMOTE_CONNECTION.md](REMOTE_CONNECTION.md)**
 
 ## How the App Gets Information from the Vehicle
 
@@ -67,6 +78,37 @@ The `MainService` class runs as a foreground service that:
 
 ### 5. **Boot Receiver**
 The `BootReceiver` ensures the app starts automatically when the vehicle's infotainment system boots up, providing seamless integration.
+
+### 6. **Remote Connectivity (Socket.IO & WebRTC)**
+The app connects to cloud services to enable remote monitoring and control:
+
+**Socket.IO Client** (`br.com.rory.electro.k.a.d`, `JoinSocketIO.java`):
+- Real-time bidirectional communication with cloud backend
+- Sends vehicle status updates to phone app
+- Receives remote commands from phone app
+- 30+ message types for different data and commands
+- Automatic reconnection with exponential backoff
+
+**WebRTC Video Streaming** (`libjingle_peerconnection_so.so`):
+- Streams live camera feeds to phone app
+- H.264/VP8 video encoding with DTLS-SRTP encryption
+- Supports multiple simultaneous camera streams
+- Low-latency peer-to-peer connection
+
+**Authentication & Pairing**:
+- Google account integration for user authentication
+- SPAKE2 secure pairing protocol (`libspake2.so`)
+- OAuth 2.0 token-based authorization
+- Device whitelisting for security
+
+**Data Flow for Remote Monitoring:**
+```
+Vehicle Status → MainService → Socket.IO Client → Cloud Backend → Phone App
+                                                                        ↓
+Remote Command ← MainService ← Socket.IO Client ← Cloud Backend ← Phone App
+```
+
+See [REMOTE_CONNECTION.md](REMOTE_CONNECTION.md) for comprehensive details on remote features.
 
 ## Application Architecture
 
