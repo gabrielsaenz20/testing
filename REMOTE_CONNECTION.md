@@ -7,31 +7,31 @@ The BYD Electric Vehicle infotainment app has sophisticated remote connectivity 
 ## Remote Connection Architecture
 
 ```
-┌─────────────────────┐
-│  Phone App (Mobile) │
-│  - Android/iOS      │
-│  - User Dashboard   │
-│  - Controls         │
-└──────────┬──────────┘
+┌──────────────────────┐
+│   Phone App (Mobile) │
+│   - Android/iOS      │
+│   - User Dashboard   │
+│   - Controls         │
+└──────────┬───────────┘
            │
            │ Internet (HTTPS/WSS)
            │
-┌──────────▼──────────┐
-│   Cloud Backend     │
-│  - Socket.IO Server │
-│  - WebRTC Server    │
-│  - REST API         │
-│  - Authentication   │
-└──────────┬──────────┘
+┌──────────▼───────────┐
+│    Cloud Backend     │
+│   - Socket.IO Server │
+│   - WebRTC Server    │
+│   - REST API         │
+│   - Authentication   │
+└──────────┬───────────┘
            │
            │ Internet (Cellular/WiFi)
            │
-┌──────────▼──────────┐
-│ Vehicle Infotainment│
-│  - This App         │
-│  - Socket.IO Client │
-│  - WebRTC Client    │
-└─────────────────────┘
+┌──────────▼───────────┐
+│ Vehicle Infotainment │
+│   - This App         │
+│   - Socket.IO Client │
+│   - WebRTC Client    │
+└──────────────────────┘
 ```
 
 ## How Remote Connection Works
@@ -334,7 +334,7 @@ The actual implementation is in native C++ code:
 
 Connection parameters likely stored in:
 - **Backend URL:** Hardcoded or from config file
-- **Socket.IO Port:** Default 443 (HTTPS)
+- **Socket.IO Port:** Typically uses WebSocket Secure (WSS) over HTTPS on port 443, or dedicated ports 3000-3100 for Socket.IO
 - **WebRTC STUN Servers:** Google STUN servers or BYD-owned
 - **API Endpoints:** RESTful API for non-real-time operations
 
