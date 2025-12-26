@@ -1,32 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    BYD Electric Vehicle Infotainment Application
+    Package: br.com.rory.electro
+    Version: 1.6.0 (Build 75)
+    
+    This application provides vehicle information display and camera monitoring
+    for BYD electric vehicles on Android-based infotainment systems.
+-->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     android:versionCode="75"
     android:versionName="1.6.0"
     package="br.com.rory.electro">
+    <!-- Target Android 7.1 (API 25) for compatibility with vehicle infotainment systems -->
     <uses-sdk
         android:minSdkVersion="25"
         android:targetSdkVersion="25"/>
+    
+    <!-- Network Permissions -->
+    <!-- Required for cloud connectivity, remote data sync, and online features -->
     <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    
+    <!-- Service Permissions -->
+    <!-- FOREGROUND_SERVICE: Run continuous vehicle monitoring service -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <!-- WAKE_LOCK: Keep CPU running for real-time vehicle data collection -->
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <!-- RECEIVE_BOOT_COMPLETED: Auto-start on vehicle system boot -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    
+    <!-- Storage Permissions -->
+    <!-- Required for logging vehicle data and caching information -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    
+    <!-- Location Permissions -->
+    <!-- ACCESS_FINE_LOCATION: Get vehicle GPS coordinates -->
+    <!-- ACCESS_BACKGROUND_LOCATION: Track location even when app is not visible -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    
+    <!-- System Permissions -->
+    <!-- WRITE_SECURE_SETTINGS: Modify system settings for vehicle integration -->
     <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS"/>
+    <!-- REQUEST_INSTALL_PACKAGES: Enable app updates -->
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
+    <!-- READ_LOGS: Debug and monitor system behavior -->
     <uses-permission android:name="android.permission.READ_LOGS"/>
+    <!-- READ_PHONE_STATE: Access device identifiers and system state -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    
+    <!-- Media Permissions -->
+    <!-- RECORD_AUDIO: Enable audio from vehicle cameras -->
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    
+    <!-- Notification Permissions -->
+    <!-- POST_NOTIFICATIONS: Display vehicle alerts and warnings -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    
+    <!-- Alarm Permissions -->
+    <!-- SCHEDULE_EXACT_ALARM: Schedule precise timing for vehicle monitoring tasks -->
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
+    
+    <!-- Custom permission for seat memory operations (signature-level security) -->
     <permission
         android:name="br.com.rory.electro.PERMISSION_LOAD_SEAT_MEMORY"
         android:protectionLevel="signature"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    
+    <!-- Application Configuration -->
     <application
         android:theme="@style/AppTheme"
         android:label="@string/app_name"
@@ -35,51 +80,90 @@
         android:allowBackup="true"
         android:supportsRtl="true"
         android:roundIcon="@mipmap/ic_launcher_round">
+        
+        <!-- Main Activity: Primary user interface for vehicle information display -->
         <activity android:name="br.com.rory.electro.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        
+        <!-- Service Launcher: Transparent activity to launch background services -->
         <activity
             android:theme="@style/Theme.Transparent"
             android:name="br.com.rory.electro.service.ServiceLauncherActivity"
             android:exported="true"/>
+        
+        <!-- Initialization Activities -->
+        <!-- DevToolsActivity: Development and diagnostic tools -->
         <activity
             android:name="br.com.rory.electro.activity.init.DevToolsActivity"
             android:exported="false"/>
+        <!-- EnableUSBDebugActivity: Enable USB debugging for development -->
         <activity
             android:name="br.com.rory.electro.activity.init.EnableUSBDebugActivity"
             android:exported="false"/>
+        <!-- ADBAuthActivity: Handle ADB authorization -->
         <activity
             android:name="br.com.rory.electro.activity.init.ADBAuthActivity"
             android:exported="false"/>
+        <!-- EnableAutoStartActivity: Configure app to start on boot -->
         <activity
             android:name="br.com.rory.electro.activity.init.EnableAutoStartActivity"
             android:exported="false"/>
+        
+        <!-- Update Management Activities -->
+        <!-- UpdateAvailable: Notify user of available updates -->
         <activity
             android:name="br.com.rory.electro.activity.update.UpdateAvailable"
             android:exported="false"/>
+        <!-- UpdateRequired: Force critical updates -->
         <activity
             android:name="br.com.rory.electro.activity.update.UpdateRequired"
             android:exported="false"/>
+        <!-- LicenseExpired: Handle license expiration -->
         <activity
             android:name="br.com.rory.electro.activity.update.LicenseExpired"
             android:exported="false"/>
+        
+        <!-- Settings Activity: User preferences and configuration -->
         <activity
             android:name="br.com.rory.electro.activity.main.SettingsActivity"
             android:exported="false"/>
+        
+        <!-- Sentry Error Reporting: Display error messages and crash reports -->
         <activity
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:name="br.com.rory.electro.activity.sentry.SentryMessageActivity"
             android:exported="true"/>
+        
+        <!-- Services -->
+        <!-- MainService: Core background service for continuous vehicle monitoring
+             - Collects real-time vehicle data (speed, RPM, battery, doors, etc.)
+             - Processes camera feeds from vehicle cameras
+             - Maintains persistent connection to vehicle CAN bus
+             - Runs as foreground service with notification
+        -->
         <service
             android:name="br.com.rory.electro.service.MainService"
             android:enabled="true"
             android:exported="true"/>
+        
+        <!-- RestarterJobService: Ensures MainService stays running
+             - Automatically restarts MainService if it crashes or is killed
+             - Uses JobScheduler API for reliability
+        -->
         <service
             android:name="br.com.rory.electro.service.RestarterJobService"
             android:permission="android.permission.BIND_JOB_SERVICE"/>
+        
+        <!-- Broadcast Receivers -->
+        <!-- BootReceiver: Start services when vehicle infotainment system boots
+             - Listens for BOOT_COMPLETED and QUICKBOOT_POWERON
+             - High priority (9900) to start early in boot process
+             - Ensures seamless vehicle integration
+        -->
         <receiver
             android:name="br.com.rory.electro.receiver.BootReceiver"
             android:enabled="true"
@@ -91,6 +175,11 @@
                 <category android:name="android.intent.category.HOME"/>
             </intent-filter>
         </receiver>
+        
+        <!-- LoadSeatMemoryReceiver: Handle seat position memory loading
+             - Protected by signature-level custom permission
+             - Restores saved seat positions
+        -->
         <receiver
             android:name="br.com.rory.electro.receiver.LoadSeatMemoryReceiver"
             android:permission="br.com.rory.electro.PERMISSION_LOAD_SEAT_MEMORY"
@@ -99,6 +188,11 @@
                 <action android:name="br.com.rory.electro.LOAD_SEAT_MEMORY"/>
             </intent-filter>
         </receiver>
+        
+        <!-- File Provider: Secure file sharing for app updates and logs
+             - Enables sharing files with other apps securely
+             - Used for OTA updates and log file exports
+        -->
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:exported="false"
