@@ -1,0 +1,20 @@
+package br.com.rory.electro.b.c.a;
+
+import android.content.Context;
+import com.rory.electro.NativeLoader;
+import java.io.PrintWriter;
+
+/* loaded from: classes.dex */
+public class a implements br.com.rory.electro.b.c.b<String> {
+    private static final String a = "a";
+
+    static {
+        NativeLoader.classesInit0(241);
+    }
+
+    @Override // br.com.rory.electro.b.c.b
+    public native String a();
+
+    @Override // br.com.rory.electro.b.c.b
+    public native void a(Context context, PrintWriter printWriter, String str);
+}
