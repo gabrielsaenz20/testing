@@ -270,13 +270,20 @@ The class contains hardcoded byte arrays (constants `a`, `b`, `c`, `k`, `l`) whi
 5. **Server-side validation** - Ultimate authority on license status
 
 **Vulnerabilities (Ethical Disclosure):**
-⚠️ While the native code provides some protection, determined attackers with root access could:
+
+⚠️ **IMPORTANT DISCLAIMER:** The following information is provided for educational purposes and security awareness only. Any attempt to bypass licensing or security measures is:
+- Illegal in most jurisdictions
+- A violation of terms of service
+- Potentially harmful to vehicle safety systems
+- Subject to civil and criminal penalties
+
+While the native code provides some protection, determined attackers with root access could theoretically:
 - Hook native functions
 - Bypass certificate pinning
 - Modify license check results in memory
 - Use custom certificate authorities
 
-**Legitimate Use:** Users should purchase valid subscriptions through official channels.
+**Legitimate Use:** Users must purchase valid subscriptions through official channels (`electro.app.br`). Tampering with license validation could compromise vehicle functionality and safety features.
 
 ## Server Infrastructure Architecture
 
@@ -337,10 +344,17 @@ The class contains hardcoded byte arrays (constants `a`, `b`, `c`, `k`, `l`) whi
 
 ### Debugging Server Connections
 
-To monitor server communication:
+⚠️ **PRIVACY AND LEGAL WARNING:**
+- Network traffic monitoring may capture sensitive personal data
+- Requires informed consent and compliance with privacy laws (GDPR, CCPA, etc.)
+- Only perform on your own device for legitimate troubleshooting
+- Do not use to intercept or monitor other users' data
+- Respect vehicle occupant privacy and data protection regulations
+
+To monitor server communication (for authorized debugging only):
 
 ```bash
-# Monitor network traffic from app
+# Monitor network traffic from app (requires root access)
 adb shell
 su
 tcpdump -i any -s 0 -w /sdcard/electro_traffic.pcap
@@ -353,6 +367,8 @@ adb shell nslookup electro.app.br
 adb shell nslookup nl.electro.app.br
 adb shell nslookup crash.electro.app.br
 ```
+
+**Note:** Traffic capture contains unencrypted data only. HTTPS traffic will show encrypted payloads.
 
 ## Privacy and Data Collection
 
