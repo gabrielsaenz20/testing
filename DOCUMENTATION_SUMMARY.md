@@ -43,7 +43,50 @@ The codebase has been extensively documented with comments and explanations to m
 - Database schema (conceptual)
 - Development and debugging tips
 
-### 3. Source Code Comments
+### 3. REMOTE_CONNECTION.md
+**Purpose**: Comprehensive guide to remote features and cloud connectivity
+
+**Key Sections**:
+- Remote connection architecture
+- Socket.IO real-time messaging (30+ message types)
+- WebRTC live camera streaming
+- Authentication and pairing (OAuth 2.0, SPAKE2)
+- Remote monitoring and control capabilities
+- Push notification system
+- Security features and encryption
+- Network requirements
+- Privacy considerations
+
+### 4. SERVER_AND_LICENSING.md (NEW)
+**Purpose**: Server configuration and licensing system documentation
+
+**Key Sections**:
+- **Server addresses discovered**:
+  - `crash.electro.app.br:8080` - Crash reporting
+  - `https://electro.app.br/app-log/` - Application logging
+  - `nl.electro.app.br` - Regional server
+  - `electro.app.br` - Main website/app portal
+- **Licensing system**:
+  - Subscription-based licensing
+  - LicenseExpired activity implementation
+  - License validation flow
+  - Renewal process via phone app or website
+  - Anti-tampering measures
+- **Security features**:
+  - Certificate pinning implementation
+  - SSL/TLS encryption
+  - Native code obfuscation
+- **Data collection and privacy**:
+  - Crash reports, logs, telemetry
+  - Privacy considerations
+- **Troubleshooting**:
+  - Common issues and solutions
+  - Network requirements
+
+### 5. DOCUMENTATION_SUMMARY.md
+**Purpose**: Quick reference guide to all documentation
+
+### 6. Source Code Comments
 
 #### AndroidManifest.xml
 - Detailed comments for every permission explaining why it's needed
@@ -152,25 +195,30 @@ The documentation extensively explains the multi-layered approach:
 
 ## Files Modified
 
-1. `/README.md` - 164 lines of user documentation
-2. `/ARCHITECTURE.md` - 611 lines of technical documentation
-3. `/resources/AndroidManifest.xml` - Added detailed comments on permissions and components
-4. `/sources/br/com/rory/electro/MainActivity.java` - Added comprehensive class and method comments
-5. `/sources/br/com/rory/electro/MyApplication.java` - Added initialization documentation
-6. `/sources/br/com/rory/electro/service/MainService.java` - Added extensive service documentation
-7. `/sources/br/com/rory/electro/logs/logs/DoorStateChangedLog.java` - Added log entry documentation
-8. `/sources/br/com/rory/electro/logs/logs/GearboxModeChangedLog.java` - Added transmission logging docs
-9. `/sources/br/com/rory/electro/logs/logs/ElectroInitLog.java` - Added initialization logging docs
-10. `/sources/br/com/rory/electro/logs/logs/MCURebootLog.java` - Added reboot logging docs
-11. `/sources/br/com/rory/electro/logs/logs/SeatComfortRunLog.java` - Added seat comfort logging docs
-12. `/sources/br/com/rory/electro/common/YuvUtils.java` - Added video processing documentation
-13. `/sources/br/com/rory/electro/common/MOG2Utils.java` - Added motion detection documentation
+1. `/README.md` - 200 lines of user documentation
+2. `/ARCHITECTURE.md` - 670 lines of technical documentation
+3. `/REMOTE_CONNECTION.md` - 400+ lines of remote connectivity guide
+4. `/SERVER_AND_LICENSING.md` - 450+ lines of server and licensing documentation (NEW)
+5. `/DOCUMENTATION_SUMMARY.md` - Quick reference guide
+6. `/resources/AndroidManifest.xml` - Added detailed comments on permissions and components
+7. `/sources/br/com/rory/electro/MainActivity.java` - Added comprehensive class and method comments
+8. `/sources/br/com/rory/electro/MyApplication.java` - Added initialization documentation
+9. `/sources/br/com/rory/electro/service/MainService.java` - Added extensive service documentation
+10. `/sources/br/com/rory/electro/logs/logs/DoorStateChangedLog.java` - Added log entry documentation
+11. `/sources/br/com/rory/electro/logs/logs/GearboxModeChangedLog.java` - Added transmission logging docs
+12. `/sources/br/com/rory/electro/logs/logs/ElectroInitLog.java` - Added initialization logging docs
+13. `/sources/br/com/rory/electro/logs/logs/MCURebootLog.java` - Added reboot logging docs
+14. `/sources/br/com/rory/electro/logs/logs/SeatComfortRunLog.java` - Added seat comfort logging docs
+15. `/sources/br/com/rory/electro/common/YuvUtils.java` - Added video processing documentation
+16. `/sources/br/com/rory/electro/common/MOG2Utils.java` - Added motion detection documentation
 
 ## Total Impact
 
-- **775+ lines** of new documentation
-- **13 files** updated with comprehensive comments
+- **1200+ lines** of new documentation across 4 markdown files
+- **16 files** updated with comprehensive comments
 - **Clear explanation** of how the app accesses vehicle data through CAN bus
+- **Server addresses documented**: crash.electro.app.br, electro.app.br, nl.electro.app.br
+- **Licensing system explained**: subscription-based with validation and renewal
 - **Technical diagrams** showing data flow and architecture
 - **Practical examples** of CAN message structures and processing
 
