@@ -39,11 +39,13 @@ The BYD Electric Vehicle infotainment app has sophisticated remote connectivity 
 ### 1. Authentication & Account Linking
 
 **Google Account Integration:**
-While Google OAuth is not explicitly visible in the decompiled code, the app likely uses Google accounts for authentication through one of these methods:
+While explicit Google OAuth code is not visible in the decompiled Java sources (likely implemented in native libraries), the app appears to support account-based authentication for remote features. Common authentication methods in automotive apps include:
 
-- **Google Sign-In SDK** (integrated in native libraries)
+- **Google Sign-In SDK** (potentially integrated in native libraries)
 - **OAuth 2.0 Token Flow** for secure authentication
 - **Firebase Authentication** as a backend service
+
+Note: The actual authentication provider may vary, but the architecture supports OAuth-style token-based authentication as evidenced by the secure pairing and remote connectivity features.
 
 **Authentication Flow:**
 ```
@@ -334,9 +336,11 @@ The actual implementation is in native C++ code:
 
 Connection parameters likely stored in:
 - **Backend URL:** Hardcoded or from config file
-- **Socket.IO Port:** Typically uses WebSocket Secure (WSS) over HTTPS on port 443, or dedicated ports 3000-3100 for Socket.IO
+- **Socket.IO Connection:** Uses WebSocket Secure (WSS) over HTTPS port 443 for encrypted communication, or may use dedicated Socket.IO ports (3000-3100) depending on backend configuration
 - **WebRTC STUN Servers:** Google STUN servers or BYD-owned
 - **API Endpoints:** RESTful API for non-real-time operations
+
+**Note:** Modern Socket.IO implementations typically use WSS over port 443 (same as HTTPS) for better firewall compatibility. Dedicated ports like 3000-3100 are mentioned as they're common in Socket.IO deployments, but the actual port used depends on the backend server configuration.
 
 ### Debugging
 
